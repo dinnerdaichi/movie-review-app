@@ -1,0 +1,78 @@
+import express from "express";
+import Movie from "../models/Movie";
+import multer from "multer";
+import path from "path";
+
+const router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+const upload = multer({ storage: storage });
+
+router.post("/add", upload.single("image"), async (req, res) => {
+  const { title, imageUrl } = req.body;
+
+  try {
+    const newMovie = new Movie({ title, imageUrl });
+    await newMovie.save();
+    res.status(201).json({ message: "Movie added successfully", movie: newMovie });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error adding movie" });
+  }
+});
+
+// 映画全体の取得
+
+router.get("/", async (req, res) => {
+  try {
+    const movies = await Movie.find();
+    res.status(200).json({ movies });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching movies" });
+  }
+});
+
+// 映画詳細取得
+router.get("/:id", async (req, res) => {
+  try {
+    const movie = await Movie.findById(req.params.id);
+    res.status(200).json({ movie });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching movie" });
+  }
+});
+
+// 映画レビュー投稿
+router.post("/:id/reviews", async (req, res) => {
+
+  try {
+    const movie = await Movie.findById(req.params.id);
+
+    if (!movie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+    const newReview = {
+      username: req.body.username,
+      text: req.body.text,
+      rating: req.body.rating,
+    };
+
+    movie.reviews.push(newReview);
+    await movie.save();
+    res.status(200).json({ movie });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching movie" });
+  }
+});
+
+export default router;
