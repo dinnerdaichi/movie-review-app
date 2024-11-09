@@ -16,7 +16,7 @@ export interface IMovie extends Document {
 
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true, unique: true },
-  rating: { type: Number, default: 0 },
+  rating: { type: [Number], default: [] },
   reviews: [
     {
       username: { type: String, required: true },

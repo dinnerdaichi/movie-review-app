@@ -47,8 +47,9 @@ const MovieList: React.FC = ({username}) => {
                     sx={sx}
                   ></CardMedia>
                   <CardContent>
-                    <Typography variant="h5">{movie.title}</Typography>
+                   {/* <Typography variant="h5">{movie.title}</Typography> */}
                     <Typography variant="body1">{movie.rating}</Typography>
+                    
                   </CardContent>
                 </Link>
               </CardActionArea>

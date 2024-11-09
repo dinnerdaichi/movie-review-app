@@ -75,4 +75,19 @@ router.post("/:id/reviews", async (req, res) => {
   }
 });
 
+router.delete("/:id/reviews/:reviewId", async (req, res) => {
+  const {id, reviewId} = req.params;
+  try {
+    const movie = await Movie.findById(id);
+    if (!movie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+    movie.reviews = movie.reviews.filter((review) => review._id.toString() !== reviewId);
+    await movie.save();
+    res.status(200).json({message: "Review deleted successfully", reviews: movie.reviews});
+} catch (error) {
+  console.error(error);
+}
+});
+
 export default router;
