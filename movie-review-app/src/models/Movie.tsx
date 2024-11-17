@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 export interface IMovie extends Document {
   title: string;
@@ -10,7 +10,7 @@ export interface IMovie extends Document {
       text: string;
       rating: number;
     }[];
-  _id?: string;
+  _id?: Types.ObjectId;
 
 }
 
@@ -22,6 +22,7 @@ const movieSchema = new mongoose.Schema({
       username: { type: String, required: true },
       text: { type: String, required: true },
       rating: { type: Number, required: true },
+      _id: { type: mongoose.Schema.Types.ObjectId, default: () => new mongoose.Types.ObjectId() },
     },
   ],
   imageUrl: { type: String, required: true, unique: true },

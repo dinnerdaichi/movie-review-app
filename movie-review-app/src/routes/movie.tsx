@@ -1,8 +1,8 @@
-// import express from "express";
 import { Request, Response, Router } from 'express';
 import Movie from "../models/Movie";
 import multer from "multer";
 import path from "path";
+
 
 const router = Router();
 
@@ -53,17 +53,18 @@ router.get("/:id", async (req, res) => {
 });
 
 // 映画レビュー投稿
-router.post("/:id/reviews", async (req: Request<{ id: string }>, res: Response) => {
+router.post("/:id/reviews", async (req:Request, res:Response):Promise<void> => {
   const id = req.params.id;
   if (!id) {
     res.status(400).send("ID is required");
     return;
   }
   try {
-    const movie = await Movie.findById(id);
+    const movie = await Movie.findById(id as string);
 
     if (!movie) {
-      return res.status(404).json({ message: "Movie not found" });
+      res.status(404).json({ message: "Movie not found" });
+      return;
     }
     const newReview = {
       username: req.body.username,
@@ -80,12 +81,13 @@ router.post("/:id/reviews", async (req: Request<{ id: string }>, res: Response) 
   }
 });
 
-router.delete("/:id/reviews/:reviewId", async (req: Request<{ id: string, reviewId: string }>, res: Response) => {
+router.delete("/:id/reviews/:reviewId", async (req: Request, res: Response):Promise<void> => {
   const { id, reviewId } = req.params;
   try {
     const movie = await Movie.findById(id);
     if (!movie) {
-      return res.status(404).json({ message: "Movie not found" });
+      res.status(404).json({ message: "Movie not found" });
+      return;
     }
     movie.reviews = movie.reviews.filter((review) => review._id.toString() !== reviewId);
     await movie.save();
@@ -96,7 +98,7 @@ router.delete("/:id/reviews/:reviewId", async (req: Request<{ id: string, review
 });
 
 // 映画編集
-router.put("/:id/edit", async (req: Request<{ id: string }>, res: Response) => {
+router.put("/:id/edit", async (req: Request, res: Response):Promise<void> => {
   const { id } = req.params;
   const { title, imageUrl } = req.body;
 
@@ -104,7 +106,8 @@ router.put("/:id/edit", async (req: Request<{ id: string }>, res: Response) => {
     const movie = await Movie.findByIdAndUpdate(id, { title, imageUrl }, { new: true, runValidators: true, select: "-reviews" });
 
     if (!movie) {
-      return res.status(404).json({ message: "Movie not found" });
+      res.status(404).json({ message: "Movie not found" });
+      return;
     }
     res.status(200).json({ message: "Movie updated successfully", movie });
   } catch (error) {

@@ -43,7 +43,7 @@ const MovieList: React.FC<MovieListProps> = ({username}) => {
         {movies.map((movie: IMovie) => (
           <Grid
             size={2}
-            key={movie._id}
+            key={movie._id?.toString()}
             sx={{pb:0,maxWidth:"165px",minWidth:"165px"}}
           >
             <Card>

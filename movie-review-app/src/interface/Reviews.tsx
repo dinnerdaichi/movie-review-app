@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 
 
 export interface Reviews {
@@ -7,4 +8,5 @@ export interface Reviews {
   image: string;
   rating: number | null;
   userId: string;
+  _id?: Types.ObjectId;
 }

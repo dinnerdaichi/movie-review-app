@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Express } from "express";
 import connectDB from "./db/db";
 import cors from "cors";
 import userRoutes from "./routes/user";
 import movieRoutes from "./routes/movie";
 
-const app = express();
+const app:Express = express();
 const PORT = 3000;
 
 connectDB();

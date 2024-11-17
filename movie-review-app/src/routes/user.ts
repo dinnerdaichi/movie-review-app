@@ -1,4 +1,5 @@
 import express from "express";
+import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import User from "../models/User";
 import jwt from "jsonwebtoken";
@@ -26,21 +27,23 @@ router.post("/register", async (req, res) => {
 });
 
 // ログイン
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res):Promise<void> => {
   const { username, password } = req.body;
 
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(401).json({ success: false, message: "User not found" });
+      res.status(401).json({ success: false, message: "User not found" });
+      return;
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ success: false, message: "Invalid password" });
+      res.status(401).json({ success: false, message: "Invalid password" });
+      return;
     }
 
-    const token = jwt.sign({ userId: user._id }, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign({ userId: user._id }, SECRET_KEY as string, { expiresIn: "1h" });
     console.log("Generated token:", token);
 
     res.status(200).json({ success: true, message: "Login successful", token });
@@ -50,19 +53,21 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/user-info", async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
+router.get("/user-info", async (req:Request, res:Response):Promise<void> => {
+  const token = (req.headers as {authorization?:string}).authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
+    (res.status(401) as Response).json({ message: "Unauthorized" });
+    return;
   }
   try {
-    const decoded = jwt.verify(token, SECRET_KEY);
+    const decoded = jwt.verify(token, SECRET_KEY as string) as jwt.JwtPayload;
     const userId = decoded.userId;
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found" });
+      return;
     }
     res.json({ username: user.username,userId:user._id });
   } catch (error) {
