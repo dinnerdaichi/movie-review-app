@@ -1,4 +1,5 @@
 import express from "express";
+import { Request, Response } from "express";
 import Movie from "../models/Movie";
 import multer from "multer";
 import path from "path";
@@ -53,7 +54,6 @@ router.get("/:id", async (req, res) => {
 
 // 映画レビュー投稿
 router.post("/:id/reviews", async (req, res) => {
-
   try {
     const movie = await Movie.findById(req.params.id);
 
@@ -76,7 +76,7 @@ router.post("/:id/reviews", async (req, res) => {
 });
 
 router.delete("/:id/reviews/:reviewId", async (req, res) => {
-  const {id, reviewId} = req.params;
+  const { id, reviewId } = req.params;
   try {
     const movie = await Movie.findById(id);
     if (!movie) {
@@ -84,10 +84,27 @@ router.delete("/:id/reviews/:reviewId", async (req, res) => {
     }
     movie.reviews = movie.reviews.filter((review) => review._id.toString() !== reviewId);
     await movie.save();
-    res.status(200).json({message: "Review deleted successfully", reviews: movie.reviews});
-} catch (error) {
-  console.error(error);
-}
+    res.status(200).json({ message: "Review deleted successfully", reviews: movie.reviews });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// 映画編集
+router.put("/:id/edit", async (req, res) => {
+  const { id } = req.params;
+  const { title, imageUrl } = req.body;
+
+  try {
+    const movie = await Movie.findByIdAndUpdate(id, { title, imageUrl }, { new: true, runValidators: true, select: "-reviews" });
+
+    if (!movie) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+    res.status(200).json({ message: "Movie updated successfully", movie });
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 export default router;

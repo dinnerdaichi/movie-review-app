@@ -1,9 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Bungee+Outline&family=Fascinate+Inline&family=Kiwi+Maru&family=Nabla&family=Noto+Sans+JP:wght@100..900&display=swap');
+
+
+body{
+  font-family: "Bagel Fat One", system-ui;
+}
+
 #root {
   /* max-width: 1280px; */
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
+  background-color: #f1efe1;
+  min-height: 100vh;
+  height: 100%;
 }
 
 .logo {
@@ -47,19 +57,61 @@
 .inner{
   width: 100%;
   max-width: 1080px;
-  margin: 0 auto;
+  margin: 50px auto;
 }
 
 .content-inner{
   width: 100%;
   max-width: 400px;
   margin-inline: auto;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .movie-image{
-  width: 80%;
+  width: 30%;
   display: block;
   margin-inline:  auto;
 
+}
+
+.movie-title{
+  font-size: 4rem;
+  text-shadow: 6px 6px 0px #000000;
+  color: #ffc100
+}
+
+
+.button-color{
+  font-family: "Bagel Fat One", system-ui;
+
+}
+
+.box-color{
+
+  font-family: "Bagel Fat One", system-ui;
+}
+
+
+.front-container{
+  padding: 0 50px 100px;
+}
+
+.front-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.front-title{
+ margin: 40px 0 ;
+}
+
+.review-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner.login{
+  max-width: 600px;
 }

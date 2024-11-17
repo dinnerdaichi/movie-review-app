@@ -2,6 +2,7 @@ import { Button, Stack, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// import { AxiosError } from "axios";
 
 
 const UserLogin: React.FC = () => {
@@ -28,8 +29,10 @@ const UserLogin: React.FC = () => {
         console.log("ログインしました");
         navigate("/");
       }
-    } catch (error) {
-      console.error("ユーザーかパスが正しくありません:", error.response?.data || error.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error("ユーザーかパスが正しくありません:", error.response?.data || error.message);
+      }
     }
 
   }
@@ -43,13 +46,27 @@ const UserLogin: React.FC = () => {
     navigate("/register");
   };
 
+   const sx = {
+     mb: 2,
+     backgroundColor: "#ffc100",
+     borderRadius: "25px",
+     boxShadow: "-4px 2px 0 0 var(--dark)",
+     padding: " 10px 30px",
+     border: "5px solid black",
+     fontFamily: "Bagel Fat One",
+     color: "black",
+     fontSize: "2rem",
+   };
+
 
   return (
     <>
-      <div className="inner">
+      <div className="inner login">
         <h1>LOGIN</h1>
         <div>
-          <Stack spacing={2}>
+          <Stack spacing={2}
+          sx={{mb:4}}
+          >
             <TextField
               label="username"
               value={username}
@@ -63,21 +80,21 @@ const UserLogin: React.FC = () => {
           </Stack>
         </div>
         <Button
-          sx={{ mt: 2, width: "100%" }} // MUIで横幅maxを設定
+          sx={{...sx,width:"49%",mr:1.5}} // MUIで横幅maxを設定
           variant="contained"
           onClick={handleLogin}
         >
           LOGIN
         </Button>
         <Button
-          sx={{ mt: 4, width: "100%" }} // MUIで横幅maxを設定
+          sx={{...sx,width:"49%"}} // MUIで横幅maxを設定
           variant="contained"
           onClick={handleRegister}
         >
           SIGN UP
         </Button>
         <Button
-          sx={{ mt: 2, width: "100%" }}
+          sx={{...sx,width:"100%"}}
           variant="contained"
           onClick={handleBack}
         >

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {  Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
+import {  Card, CardActionArea,  CardMedia,  } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { IMovie } from "./models/Movie";
 import { Link } from "react-router-dom";
 
-const MovieList: React.FC = ({username}) => {
+
+interface MovieListProps {
+  username: string;
+  // 他のプロパティがあればここに追加
+}
+const MovieList: React.FC<MovieListProps> = ({username}) => {
   const [movies, setMovies] = useState<IMovie[]>([]);
 
   useEffect(() => {
@@ -30,27 +35,26 @@ const MovieList: React.FC = ({username}) => {
       <Grid
         container
         spacing={2}
+        sx={{
+          justifyContent:"center",
+          mt:2
+        }}
       >
         {movies.map((movie: IMovie) => (
           <Grid
-            size={3}
+            size={2}
             key={movie._id}
+            sx={{pb:0,maxWidth:"165px",minWidth:"165px"}}
           >
             <Card>
               <CardActionArea>
                 <Link to={`/detail/${movie._id}`} state={{username:username}}>
-                <p>{username}</p>
                   <CardMedia
                     component="img"
-                    height="200"
+
                     image={movie.imageUrl}
-                    sx={sx}
+                    sx={{...sx,objectFit: "cover" ,height: "250px",backgroundPosition: "center"}}
                   ></CardMedia>
-                  <CardContent>
-                   {/* <Typography variant="h5">{movie.title}</Typography> */}
-                    <Typography variant="body1">{movie.rating}</Typography>
-                    
-                  </CardContent>
                 </Link>
               </CardActionArea>
             </Card>

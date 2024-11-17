@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export interface IMovie extends Document {
   title: string;
-  rating: number;
+  rating: number[];
   imageUrl: string;
   reviews:
     {
@@ -10,7 +10,7 @@ export interface IMovie extends Document {
       text: string;
       rating: number;
     }[];
-
+  _id?: string;
 
 }
 

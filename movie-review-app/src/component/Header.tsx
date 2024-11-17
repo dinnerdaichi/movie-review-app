@@ -4,13 +4,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 interface HeaderProps {
   handleChildData: (data: string) => void;
 }
-export const Header: React.FC<HeaderProps> = ({handleChildData}) => {
+export const Header: React.FC<HeaderProps> = ({ handleChildData }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(false);
+  // const [userId, setUserId] = useState(false);
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
@@ -33,8 +32,6 @@ export const Header: React.FC<HeaderProps> = ({handleChildData}) => {
       console.log("User Info Response:", response.data); // ここ
       setUsername(response.data.username);
       handleChildData(response.data.username);
-
-
     } catch (error) {
       console.log("Error fetching user info:", error);
     }
@@ -54,10 +51,37 @@ export const Header: React.FC<HeaderProps> = ({handleChildData}) => {
     navigate("/register");
   };
 
+  const sx = {
+    mb: 2,
+    backgroundColor: "#ffc100",
+    borderRadius: "25px",
+    boxShadow: "-4px 2px 0 0 var(--dark)",
+    padding: " 10px 30px",
+    border: "5px solid black",
+    fontFamily: "Bagel Fat One",
+    color: "black",
+    fontSize: "2rem",
+  };
+
+  const sx2 = {
+    backgroundColor: "#0080cc",
+    borderRadius: "25px",
+    boxShadow: "-4px 2px 0 0 var(--dark)",
+    padding: " 10px 30px",
+    border: "5px solid black",
+    fontFamily: "Kiwi Maru",
+    color: "#ffc100",
+    fontSize: "2rem",
+    mb: 0,
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar
+        position="static"
+        sx={{ ...sx }}
+      >
+        <Toolbar className="box-color">
           <IconButton
             size="large"
             edge="start"
@@ -72,18 +96,29 @@ export const Header: React.FC<HeaderProps> = ({handleChildData}) => {
             flexGrow={1}
             component="div"
             align="left"
+            fontFamily="Bagel Fat One"
+            fontSize="2rem"
           >
-            Movie Review
+            Movie ReviewApp
           </Typography>
 
           {isLoggedIn ? (
             <>
-              <Typography sx={{ mr: 2 }}>Hi👋 {username}さん</Typography>
+              <Typography
+                sx={{
+                  mr: 2,
+                  fontFamily: "Bagel Fat One",
+                  fontSize: "2rem",
+                }}
+              >
+                Hi👋 {username}
+              </Typography>
               <Button
+                sx={{ ...sx2, fontSize: "1rem", fontFamily: "Bagel Fat One", mb: 0 }}
                 variant="contained"
                 onClick={handleLogout}
               >
-                ログアウト
+                logout
               </Button>
             </>
           ) : (
@@ -91,13 +126,14 @@ export const Header: React.FC<HeaderProps> = ({handleChildData}) => {
               <Button
                 variant="contained"
                 onClick={goToSignup}
-                sx={{mr:2}}
+                sx={{ ...sx2, mr: 2, fontSize: "1rem", fontFamily: "Bagel Fat One" }}
               >
                 SIGN UP
               </Button>
               <Button
                 variant="contained"
                 onClick={goToLogin}
+                sx={{ ...sx2, fontSize: "1rem", fontFamily: "Bagel Fat One" }}
               >
                 LOGIN
               </Button>

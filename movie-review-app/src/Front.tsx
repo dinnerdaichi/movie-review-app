@@ -7,17 +7,16 @@ import MovieList from "./MovieList";
 
 interface FrontProps {
   reviews: Reviews[];
-  data: string
+  // data: string;
 }
 
-const Front: React.FC<FrontProps> = ({ reviews }) => {
-  const [userId, setUserId] = useState("");
+const Front: React.FC<FrontProps> = () => {
+  // const [userId, setUserId] = useState("");
   const [username, setUsername] = useState("");
 
-  const handleChildData = (data) => {
+  const handleChildData = (data: string) => {
     setUsername(data);
-  }
-
+  };
 
   const navigate = useNavigate();
   // const handleclick = () => {
@@ -34,21 +33,38 @@ const Front: React.FC<FrontProps> = ({ reviews }) => {
     navigate("/add");
   };
 
+  const sx = {
+    marginTop:"10px",
+    marginLeft:"20px",
+    backgroundColor: "#ffc100",
+    borderRadius: "30px",
+    boxShadow: "-4px 2px 0 0 var(--dark)",
+    border: "5px solid black",
+    fontFamily: "Bagel Fat One",
+    color: "black",
+    fontSize: "1.5rem",
+    height:"80px",
+    padding:"10px 30px",
+    alignItems:"center",
+  };
+
   return (
     <>
       <Header handleChildData={handleChildData} />
-      <div>
-        <h1>Find Your Movie!!</h1>
-
-        <Button
-          variant="contained"
-          onClick={() => {
-            handleclick();
-          }}
-          sx={{ mb: 2 }}
-        >
-          ADD MOVIE
-        </Button>
+      <div className="front-container">
+        <div className="front-flex">
+          <h1 className="front-title">Find Your FAV!!</h1>
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleclick();
+            }}
+            sx={sx}
+            className="button-color"
+          >
+            ADD MOVIE🎥
+          </Button>
+        </div>
 
         <MovieList username={username} />
       </div>
