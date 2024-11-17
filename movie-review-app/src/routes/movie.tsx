@@ -7,10 +7,10 @@ import path from "path";
 const router = express.Router();
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_, __, cb) => {
     cb(null, "uploads/");
   },
-  filename: (req, file, cb) => {
+  filename: (_, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
@@ -31,7 +31,7 @@ router.post("/add", upload.single("image"), async (req, res) => {
 
 // 映画全体の取得
 
-router.get("/", async (req, res) => {
+router.get("/", async (_, res) => {
   try {
     const movies = await Movie.find();
     res.status(200).json({ movies });
