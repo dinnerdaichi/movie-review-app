@@ -1,10 +1,10 @@
-import express from "express";
-import { Request, Response } from "express";
+// import express from "express";
+import { Request, Response, Router } from 'express';
 import Movie from "../models/Movie";
 import multer from "multer";
 import path from "path";
 
-const router = express.Router();
+const router = Router();
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
@@ -53,9 +53,14 @@ router.get("/:id", async (req, res) => {
 });
 
 // 映画レビュー投稿
-router.post("/:id/reviews", async (req, res) => {
+router.post("/:id/reviews", async (req: Request<{ id: string }>, res: Response) => {
+  const id = req.params.id;
+  if (!id) {
+    res.status(400).send("ID is required");
+    return;
+  }
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(id);
 
     if (!movie) {
       return res.status(404).json({ message: "Movie not found" });
@@ -75,7 +80,7 @@ router.post("/:id/reviews", async (req, res) => {
   }
 });
 
-router.delete("/:id/reviews/:reviewId", async (req, res) => {
+router.delete("/:id/reviews/:reviewId", async (req: Request<{ id: string, reviewId: string }>, res: Response) => {
   const { id, reviewId } = req.params;
   try {
     const movie = await Movie.findById(id);
@@ -91,7 +96,7 @@ router.delete("/:id/reviews/:reviewId", async (req, res) => {
 });
 
 // 映画編集
-router.put("/:id/edit", async (req, res) => {
+router.put("/:id/edit", async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
   const { title, imageUrl } = req.body;
 
