@@ -1,5 +1,5 @@
 import { Button, Stack, TextField } from "@mui/material";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,8 +17,8 @@ const UserRegister: React.FC = () => {
       });
       console.log("保存しました");
       BackBtn();
-    } catch (error) {
-      console.error("Error registering user:", error.response?.data || error.message);
+    } catch (error: unknown) {
+      console.error("Error registering user:", (error as AxiosError).response?.data || (error as Error).message);
     }
   };
 
