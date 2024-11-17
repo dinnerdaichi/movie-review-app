@@ -89,7 +89,7 @@ router.delete("/:id/reviews/:reviewId", async (req: Request, res: Response):Prom
       res.status(404).json({ message: "Movie not found" });
       return;
     }
-    movie.reviews = movie.reviews.filter((review) => review._id.toString() !== reviewId);
+    movie.reviews = movie.reviews.filter((review) => review._id && review._id.toString() !== reviewId);
     await movie.save();
     res.status(200).json({ message: "Review deleted successfully", reviews: movie.reviews });
   } catch (error) {
