@@ -9,10 +9,16 @@ const PORT = 3000;
 
 connectDB();
 
+// CORS設定を更新
 app.use(cors({
-  origin: "http://localhost:5173"
-}))
-
+  origin: [
+    "https://movie-review-l1uzt4i3i-dinnerdaichis-projects.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173"  // ローカル開発用のポート追加
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 
 app.use(express.json());
