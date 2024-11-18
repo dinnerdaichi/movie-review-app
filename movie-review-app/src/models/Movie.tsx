@@ -1,4 +1,3 @@
-import { Reviews } from "@mui/icons-material";
 import mongoose, { Types } from "mongoose";
 
 export interface IMovie extends Document {
@@ -17,8 +16,13 @@ export interface IMovie extends Document {
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true, unique: true },
   rating: { type: [Number], default: [] },
-  reviews: [Reviews],
   imageUrl: { type: String, required: true, unique: true },
+  reviews: [{
+    username: { type: String, required: true },
+    text: { type: String, required: true },
+    rating: { type: Number, required: true },
+    _id: { type: mongoose.Schema.Types.ObjectId, required: false }
+  }],
 });
 
 const Movie = mongoose.model<IMovie>("Movie", movieSchema);

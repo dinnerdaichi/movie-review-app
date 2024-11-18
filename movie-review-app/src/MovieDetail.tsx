@@ -185,12 +185,25 @@ const MovieDetail: React.FC = () => {
   const handleBack = () => {
     navigate("/");
   };
+  const customStyle = (imageUrl: string | undefined) =>
+    ({
+      backgroundBlendMode: "overlay",
+
+      backgroundColor: "#d2d2d2",
+      backgroundSize: "cover",
+      padding: "100px 0",
+      position: "relative",
+      width: "100%",
+      height: "100%",
+      zIndex: 0,
+      "--image-url": `url(${imageUrl})`, // CSS変数を直接指定
+    } as React.CSSProperties); // CSSProperties型にキャストしてTypeScriptのエラーを回避
 
   return (
     <>
       <div
         className="wrap"
-        style={{ backgroundBlendMode: "overlay", backgroundColor: "#d2d2d2", backgroundImage: `url(${movie?.imageUrl})`, backgroundSize: "cover", padding: "100px 0" }}
+        style={customStyle(movie?.imageUrl)}
       >
         <div className="inner">
           <img
@@ -217,19 +230,19 @@ const MovieDetail: React.FC = () => {
                       <Typography
                         variant="h6"
                         component="div"
-                        sx={{ textAlign: "left", fontSize: "20px",fontFamily:"Kiwi Maru" }}
+                        sx={{ textAlign: "left", fontSize: "20px", fontFamily: "Kiwi Maru" }}
                       >
                         {review.username}
                       </Typography>
                       <Typography
                         variant="body2"
-                        sx={{ textAlign: "left", fontSize: "24px",fontFamily:"Kiwi Maru" }}
+                        sx={{ textAlign: "left", fontSize: "24px", fontFamily: "Kiwi Maru" }}
                       >
                         {review.text}
                       </Typography>
                       <Typography
                         variant="body2"
-                        sx={{ textAlign: "left", fontSize: "18px",fontFamily:"Kiwi Maru" }}
+                        sx={{ textAlign: "left", fontSize: "18px", fontFamily: "Kiwi Maru" }}
                       >
                         Rating: {review.rating}
                       </Typography>
@@ -245,10 +258,11 @@ const MovieDetail: React.FC = () => {
                 </Grid>
               ))
             ) : (
-              <Grid item xs={12}>
-                <Card
-                  sx={{ width: "50%", textAlign: "center", height: "100px", alignItems: "center", display: "flex", justifyContent: "center" }}
-                >
+              <Grid
+                item
+                xs={12}
+              >
+                <Card sx={{ width: "50%", textAlign: "center", height: "100px", alignItems: "center", display: "flex", justifyContent: "center" }}>
                   <p>No reviews yet~!!</p>
                 </Card>
               </Grid>

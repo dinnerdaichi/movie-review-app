@@ -13,7 +13,6 @@ connectDB();
 app.use(cors({
   origin: [
     "https://movie-review-app-chi.vercel.app",
-    "https://movie-review-l1uzt4i3i-dinnerdaichis-projects.vercel.app",
     "http://localhost:3000",
     "http://localhost:5173"
   ],
