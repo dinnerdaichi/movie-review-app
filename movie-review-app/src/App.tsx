@@ -11,8 +11,7 @@ import MovieDetail from "./MovieDetail";
 import MovieEdit from "./MovieEdit";
 
 function App() {
-  const [reviews, setReviews] = useState<Reviews[]>([
-]);
+  const [reviews, setReviews] = useState<Reviews[]>([]);
 
   // const addReview = (newReview: Reviews) => {
   //   setReviews([...reviews, newReview]);
@@ -23,7 +22,7 @@ function App() {
   }, []);
 
   const fetchReviews = async () => {
-    const response = await fetch('/api/reviews'); // 仮のエンドポイント
+    const response = await fetch("/api/reviews"); // 仮のエンドポイント
     const data = await response.json();
     setReviews(data);
   };
@@ -34,23 +33,32 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              <Front
-                reviews={reviews}
-
-
-              />
-            }
+            element={<Front reviews={reviews} />}
           />
           {/* <Route
             path="/create"
             element={<CreateMovieReview addReview={addReview} />}
           /> */}
-          <Route  path="/register" element={<UserRegister />} />
-          <Route path="/login" element={<UserLogin />} />
-          <Route path="/add" element={<AddMovie />} />
-          <Route path="/detail/:movieId" element={<MovieDetail />} />
-          <Route path="/movies/:movieId/edit" element={<MovieEdit />} />
+          <Route
+            path="/register"
+            element={<UserRegister />}
+          />
+          <Route
+            path="/login"
+            element={<UserLogin />}
+          />
+          <Route
+            path="/add"
+            element={<AddMovie />}
+          />
+          <Route
+            path="/detail/:movieId"
+            element={<MovieDetail />}
+          />
+          <Route
+            path="/movies/:movieId/edit"
+            element={<MovieEdit />}
+          />
         </Routes>
       </Router>
     </>
